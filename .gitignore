@@ -1,0 +1,25 @@
+# STM32CubeIDE generated build outputs
+**/Debug/
+**/Release/
+**/build/
+
+# STM32CubeIDE/CubeMX machine-local metadata
+**/.settings/
+**/.mxproject
+**/.metadata/
+*.launch
+*.log
+
+# Host unit-test binaries
+tests/test_app_counter
+tests/test_app_counter.exe
+
+# Editor and operating-system files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Temporary and backup files
+*.tmp
+*.bak
+*~
