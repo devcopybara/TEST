@@ -2,7 +2,11 @@ name: STM32 CI
 
 on:
   push:
+    branches:
+      - main
   pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -49,4 +53,3 @@ jobs:
             00_CORTEX_12_PRINTF_f103/build/firmware/*.map
           if-no-files-found: error
           retention-days: 14
-
