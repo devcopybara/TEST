@@ -1,0 +1,55 @@
+name: STM32 CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: stm32-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit-test:
+    name: Host unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Build and run tests
+        run: make test
+
+  firmware-build:
+    name: ARM firmware build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Install ARM GNU toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes gcc-arm-none-eabi
+
+      - name: Build firmware
+        run: make firmware
+
+      - name: Upload firmware artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: stm32f103-firmware
+          path: |
+            00_CORTEX_12_PRINTF_f103/build/firmware/*.elf
+            00_CORTEX_12_PRINTF_f103/build/firmware/*.hex
+            00_CORTEX_12_PRINTF_f103/build/firmware/*.bin
+            00_CORTEX_12_PRINTF_f103/build/firmware/*.map
+          if-no-files-found: error
+          retention-days: 14
